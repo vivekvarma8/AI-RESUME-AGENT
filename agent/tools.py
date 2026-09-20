@@ -10,6 +10,7 @@ class AgentTools:
         self.skill_matcher = SkillMatcher()
         self.knowledge_base = CareerKnowledgeBase()
         # Build index on initialization
+        print("Building knowledge base index...")
         self.knowledge_base.build_index()
     
     def extract_skills(self, text: str) -> list:

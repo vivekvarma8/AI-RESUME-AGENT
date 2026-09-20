@@ -20,3 +20,10 @@ instance/
 # Uploads
 uploads/*.pdf
 uploads/*.docx
+@"
+
+# ChromaDB
+chroma/
+*.db
+*.sqlite3
+"@ | Add-Content -Path ".gitignore"
