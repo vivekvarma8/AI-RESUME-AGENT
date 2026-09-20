@@ -1,0 +1,40 @@
+Software Engineer - Backend Development
+
+Company: TechStart Inc.
+Location: Remote
+Experience: 3-5 years
+
+Job Description:
+We are looking for a skilled Backend Software Engineer to join our team. You will be responsible for building scalable microservices and REST APIs.
+
+Required Skills:
+- Python (Django or Flask)
+- REST API development
+- Docker and containerization
+- AWS or cloud platforms
+- SQL databases (PostgreSQL preferred)
+- Git version control
+- Microservices architecture
+- Unit testing
+
+Preferred Skills:
+- Kubernetes
+- CI/CD pipelines
+- Redis
+- Message queues (RabbitMQ, Kafka)
+- GraphQL
+- TypeScript
+
+Responsibilities:
+- Design and develop REST APIs
+- Build microservices using Docker
+- Optimize database queries
+- Write unit and integration tests
+- Collaborate with frontend team
+- Deploy applications on AWS
+- Code reviews and mentoring
+
+Nice to Have:
+- Machine Learning experience
+- React or frontend knowledge
+- AWS certifications

@@ -1,0 +1,65 @@
+SOFTWARE ENGINEER - BACKEND
+
+Role Overview:
+Backend software engineers design, build, and maintain server-side applications, APIs, and databases. They focus on application logic, database interactions, and server infrastructure.
+
+Core Technical Skills:
+- Programming: Python, Java, Node.js, Go, C#
+- Frameworks: Django, Flask, Spring Boot, Express.js, FastAPI
+- Databases: PostgreSQL, MySQL, MongoDB, Redis
+- APIs: REST, GraphQL, gRPC
+- Version Control: Git, GitHub, GitLab
+- Containerization: Docker, Kubernetes
+- Cloud: AWS, GCP, Azure
+- Testing: Unit testing, Integration testing, TDD
+
+Essential Concepts:
+- Microservices architecture
+- API design and development
+- Database design and optimization
+- Authentication and authorization (OAuth, JWT)
+- Caching strategies
+- Message queues (RabbitMQ, Kafka)
+- CI/CD pipelines
+- Monitoring and logging
+
+Common Interview Topics:
+- System design and architecture
+- Database normalization and indexing
+- API rate limiting and scaling
+- Authentication flows
+- Concurrency and threading
+- Data structures and algorithms
+- Design patterns
+
+Recommended Projects:
+- REST API with authentication
+- E-commerce backend
+- Real-time chat application
+- Task management system
+- URL shortener service
+- Social media backend
+
+Career Path:
+Junior Backend Engineer → Backend Engineer → Senior Backend Engineer → Staff Engineer → Principal Engineer
+
+Typical Responsibilities:
+- Design and implement APIs
+- Optimize database queries
+- Write clean, maintainable code
+- Debug and troubleshoot issues
+- Collaborate with frontend developers
+- Participate in code reviews
+- Deploy and monitor applications
+
+Learning Resources:
+- "Designing Data-Intensive Applications" by Martin Kleppmann
+- System Design Interview courses
+- LeetCode for coding practice
+- Backend development bootcamps
+- Cloud platform certifications
+
+Salary Range (US):
+Entry-level: $70,000 - $95,000
+Mid-level: $95,000 - $140,000
+Senior: $140,000 - $200,000+

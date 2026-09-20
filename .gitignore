@@ -1,0 +1,22 @@
+﻿# Environment
+venv/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask
+instance/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Uploads
+uploads/*.pdf
+uploads/*.docx

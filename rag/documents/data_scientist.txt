@@ -1,0 +1,65 @@
+DATA SCIENTIST
+
+Role Overview:
+Data Scientists analyze complex data sets to derive insights, build predictive models, and solve business problems using statistical methods and machine learning.
+
+Core Technical Skills:
+- Programming: Python, R, SQL
+- Libraries: Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch
+- Statistics: Hypothesis testing, regression, probability
+- Machine Learning: Supervised/unsupervised learning, deep learning
+- Data Visualization: Matplotlib, Seaborn, Plotly, Tableau
+- Big Data: Spark, Hadoop
+- Databases: SQL, NoSQL
+- Cloud: AWS SageMaker, Google Cloud AI, Azure ML
+
+Essential Concepts:
+- Statistical analysis
+- Feature engineering
+- Model training and evaluation
+- Cross-validation
+- Hyperparameter tuning
+- A/B testing
+- Data cleaning and preprocessing
+- Model deployment
+
+Common Interview Topics:
+- Statistics fundamentals
+- Machine learning algorithms
+- SQL queries
+- Python coding
+- Model evaluation metrics
+- Business case studies
+- Experimental design
+
+Recommended Projects:
+- Customer churn prediction
+- Recommendation system
+- Sentiment analysis
+- Time series forecasting
+- Image classification
+- Natural language processing
+
+Career Path:
+Junior Data Scientist → Data Scientist → Senior Data Scientist → Lead Data Scientist → Chief Data Officer
+
+Typical Responsibilities:
+- Clean and preprocess data
+- Perform exploratory data analysis
+- Build predictive models
+- Communicate findings to stakeholders
+- Deploy models to production
+- Monitor model performance
+- Collaborate with engineers
+
+Learning Resources:
+- Kaggle competitions
+- "Hands-On Machine Learning" by Aurélien Géron
+- Coursera Machine Learning courses
+- Fast.ai courses
+- DataCamp
+
+Salary Range (US):
+Entry-level: $75,000 - $100,000
+Mid-level: $100,000 - $150,000
+Senior: $150,000 - $220,000+

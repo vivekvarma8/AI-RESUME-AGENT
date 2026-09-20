@@ -1,0 +1,64 @@
+MACHINE LEARNING ENGINEER
+
+Role Overview:
+ML Engineers focus on deploying, scaling, and maintaining machine learning models in production. They bridge the gap between data science and software engineering.
+
+Core Technical Skills:
+- Programming: Python, Java, C++
+- ML Frameworks: TensorFlow, PyTorch, Scikit-learn, XGBoost
+- MLOps: MLflow, Kubeflow, SageMaker
+- Containerization: Docker, Kubernetes
+- Cloud: AWS, GCP, Azure
+- APIs: REST, gRPC
+- Databases: PostgreSQL, MongoDB
+- Version Control: Git, DVC
+
+Essential Concepts:
+- Model deployment and serving
+- Model monitoring and retraining
+- Feature stores
+- Model versioning
+- A/B testing
+- Pipeline orchestration
+- Model optimization
+- Distributed training
+
+Common Interview Topics:
+- ML algorithms and theory
+- System design for ML systems
+- Model deployment strategies
+- Coding (data structures + algorithms)
+- ML infrastructure
+- Performance optimization
+
+Recommended Projects:
+- Deploy ML model as API
+- Build recommendation engine
+- Computer vision application
+- NLP chatbot
+- Real-time prediction system
+- AutoML pipeline
+
+Career Path:
+ML Engineer → Senior ML Engineer → Staff ML Engineer → ML Architect
+
+Typical Responsibilities:
+- Deploy ML models to production
+- Build ML pipelines
+- Optimize model performance
+- Monitor model drift
+- Scale ML infrastructure
+- Collaborate with data scientists
+- Implement MLOps practices
+
+Learning Resources:
+- "Machine Learning Engineering" by Andriy Burkov
+- Full Stack Deep Learning course
+- MLOps courses
+- Cloud ML certifications
+- Engineering blogs (Netflix, Uber, Airbnb)
+
+Salary Range (US):
+Entry-level: $90,000 - $120,000
+Mid-level: $120,000 - $170,000
+Senior: $170,000 - $250,000+
