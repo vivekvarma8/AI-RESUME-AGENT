@@ -9,9 +9,10 @@ class CareerKnowledgeBase:
     def __init__(self, documents_dir="rag/documents"):
         self.documents_dir = Path(documents_dir)
         
-        # Initialize embedding model
+        # Initialize embedding model - USING SMALLER MODEL
         print("Loading embedding model...")
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        # Changed from 'all-MiniLM-L6-v2' (90MB) to 'paraphrase-MiniLM-L3-v2' (60MB)
+        self.embedding_model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
         
         # Initialize ChromaDB
         self.chroma_client = chromadb.Client()
@@ -23,7 +24,6 @@ class CareerKnowledgeBase:
                 metadata={"description": "Career and job role knowledge base"}
             )
         except:
-            # Collection already exists
             self.collection = self.chroma_client.get_collection("career_knowledge")
     
     def load_documents(self):
@@ -37,7 +37,7 @@ class CareerKnowledgeBase:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
                 
-                # Split into chunks (simple paragraph-based splitting)
+                # Split into chunks
                 chunks = [p.strip() for p in content.split('\n\n') if p.strip()]
                 
                 for chunk in chunks:

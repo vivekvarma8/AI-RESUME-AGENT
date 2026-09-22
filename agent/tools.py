@@ -1,17 +1,24 @@
 """Tools that the agent can use"""
 
 from parsers.skill_matcher import SkillMatcher
-from rag.vector_store import CareerKnowledgeBase
 
 class AgentTools:
     """Collection of tools for the resume agent"""
     
     def __init__(self):
         self.skill_matcher = SkillMatcher()
-        self.knowledge_base = CareerKnowledgeBase()
-        # Build index on initialization
-        print("Building knowledge base index...")
-        self.knowledge_base.build_index()
+        self._knowledge_base = None
+        self._kb_initialized = False
+    
+    def _ensure_kb_loaded(self):
+        """Lazy load knowledge base only when needed"""
+        if not self._kb_initialized:
+            print("📚 Initializing knowledge base...")
+            from rag.vector_store import CareerKnowledgeBase
+            self._knowledge_base = CareerKnowledgeBase()
+            self._knowledge_base.build_index()
+            self._kb_initialized = True
+            print("✅ Knowledge base ready!")
     
     def extract_skills(self, text: str) -> list:
         """Extract skills from text"""
@@ -24,7 +31,8 @@ class AgentTools:
     
     def search_knowledge(self, query: str, n_results: int = 3) -> str:
         """Search career knowledge base"""
-        return self.knowledge_base.get_relevant_context(query, n_results)
+        self._ensure_kb_loaded()  # Only loads on first call
+        return self._knowledge_base.get_relevant_context(query, n_results)
     
     def calculate_match_percentage(self, matched: int, total: int) -> float:
         """Calculate skill match percentage"""
