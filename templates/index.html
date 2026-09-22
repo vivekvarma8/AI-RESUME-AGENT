@@ -190,16 +190,6 @@
             line-height: 1.8;
             white-space: pre-wrap;
         }
-
-        .recommendation-section {
-            margin-bottom: 20px;
-        }
-
-        .recommendation-section h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
     </style>
 </head>
 <body>
@@ -277,7 +267,6 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Hide previous results
             results.style.display = 'none';
             error.style.display = 'none';
             loading.style.display = 'block';
@@ -286,21 +275,40 @@
             try {
                 const formData = new FormData(form);
                 
+                console.log('Sending request...');
+                
                 const response = await fetch('/analyze', {
                     method: 'POST',
                     body: formData
                 });
 
-                const data = await response.json();
+                console.log('Response status:', response.status);
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Analysis failed');
+                const responseText = await response.text();
+                console.log('Response:', responseText.substring(0, 200));
+
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (jsonError) {
+                    console.error('JSON parse error:', jsonError);
+                    console.error('Full response:', responseText);
+                    throw new Error('Server returned invalid JSON');
                 }
 
-                // Display results
+                if (!response.ok) {
+                    throw new Error(data.error || 'Server error');
+                }
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                console.log('Success!', data);
                 displayResults(data);
 
             } catch (err) {
+                console.error('Error:', err);
                 error.textContent = '❌ ' + err.message;
                 error.style.display = 'block';
             } finally {
@@ -310,31 +318,23 @@
         });
 
         function displayResults(data) {
-            // Match score
             document.getElementById('matchScore').textContent = data.match_percentage + '%';
 
-            // Matched skills
             document.getElementById('matchedCount').textContent = data.matched_skills.length;
             const matchedContainer = document.getElementById('matchedSkills');
             matchedContainer.innerHTML = data.matched_skills
                 .map(skill => `<div class="skill-tag matched">${skill}</div>`)
                 .join('');
 
-            // Missing skills
             document.getElementById('missingCount').textContent = data.missing_skills.length;
             const missingContainer = document.getElementById('missingSkills');
             missingContainer.innerHTML = data.missing_skills
                 .map(skill => `<div class="skill-tag missing">${skill}</div>`)
                 .join('');
 
-            // AI Recommendations
-            const recommendationsElement = document.getElementById('aiRecommendations');
-            recommendationsElement.textContent = data.recommendations || 'AI recommendations temporarily unavailable. Please see skill analysis above.';
+            document.getElementById('aiRecommendations').textContent = data.recommendations || 'No recommendations available';
+            document.getElementById('fullReport').textContent = data.report || 'No report available';
 
-            // Full report
-            document.getElementById('fullReport').textContent = data.report;
-
-            // Show results
             results.style.display = 'block';
             results.scrollIntoView({ behavior: 'smooth' });
         }

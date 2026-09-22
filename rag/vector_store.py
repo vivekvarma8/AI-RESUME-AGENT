@@ -1,7 +1,9 @@
 from sentence_transformers import SentenceTransformer
 import chromadb
 from pathlib import Path
-import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CareerKnowledgeBase:
     """RAG system for career knowledge"""
@@ -9,9 +11,8 @@ class CareerKnowledgeBase:
     def __init__(self, documents_dir="rag/documents"):
         self.documents_dir = Path(documents_dir)
         
-        # Initialize embedding model - USING SMALLER MODEL
-        print("Loading embedding model...")
-        # Changed from 'all-MiniLM-L6-v2' (90MB) to 'paraphrase-MiniLM-L3-v2' (60MB)
+        # Initialize embedding model - SMALLER MODEL
+        logger.info("Loading embedding model...")
         self.embedding_model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
         
         # Initialize ChromaDB
@@ -53,11 +54,11 @@ class CareerKnowledgeBase:
     
     def build_index(self):
         """Build vector index from documents"""
-        print("Loading documents...")
+        logger.info("Loading documents...")
         documents, metadatas, ids = self.load_documents()
         
-        print(f"Found {len(documents)} document chunks")
-        print("Creating embeddings...")
+        logger.info(f"Found {len(documents)} document chunks")
+        logger.info("Creating embeddings...")
         
         # Add to ChromaDB
         self.collection.add(
@@ -66,7 +67,7 @@ class CareerKnowledgeBase:
             ids=ids
         )
         
-        print("✅ Index built successfully!")
+        logger.info("✅ Index built successfully!")
         return len(documents)
     
     def search(self, query, n_results=3):

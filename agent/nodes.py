@@ -2,64 +2,89 @@
 
 from agent.state import AgentState
 from agent.tools import AgentTools
+import logging
+
+logger = logging.getLogger(__name__)
 
 tools = AgentTools()
 
 def parse_resume_node(state: AgentState) -> AgentState:
     """Node: Extract skills from resume"""
-    print("📄 Parsing resume...")
+    logger.info("📄 Parsing resume...")
     
-    resume_skills = tools.extract_skills(state['resume_text'])
-    
-    state['resume_skills'] = resume_skills
-    state['current_step'] = 'parse_resume'
+    try:
+        resume_skills = tools.extract_skills(state['resume_text'])
+        state['resume_skills'] = resume_skills
+        state['current_step'] = 'parse_resume'
+        logger.info(f"Found {len(resume_skills)} resume skills")
+    except Exception as e:
+        logger.error(f"Resume parsing error: {e}")
+        state['resume_skills'] = []
+        state['errors'].append(f"Resume parsing: {str(e)}")
     
     return state
 
 def analyze_job_node(state: AgentState) -> AgentState:
     """Node: Extract skills from job description"""
-    print("💼 Analyzing job description...")
+    logger.info("💼 Analyzing job description...")
     
-    job_skills = tools.extract_skills(state['job_description'])
-    
-    state['job_skills'] = job_skills
-    state['current_step'] = 'analyze_job'
+    try:
+        job_skills = tools.extract_skills(state['job_description'])
+        state['job_skills'] = job_skills
+        state['current_step'] = 'analyze_job'
+        logger.info(f"Found {len(job_skills)} job skills")
+    except Exception as e:
+        logger.error(f"Job analysis error: {e}")
+        state['job_skills'] = []
+        state['errors'].append(f"Job analysis: {str(e)}")
     
     return state
 
 def match_skills_node(state: AgentState) -> AgentState:
     """Node: Compare skills and find gaps"""
-    print("🔍 Matching skills...")
+    logger.info("🔍 Matching skills...")
     
-    match_results = tools.match_skills(
-        state['resume_text'],
-        state['job_description']
-    )
-    
-    state['matched_skills'] = match_results['matched_skills']
-    state['missing_skills'] = match_results['missing_skills']
-    state['match_percentage'] = match_results['match_percentage']
-    state['current_step'] = 'match_skills'
+    try:
+        match_results = tools.match_skills(
+            state['resume_text'],
+            state['job_description']
+        )
+        
+        state['matched_skills'] = match_results['matched_skills']
+        state['missing_skills'] = match_results['missing_skills']
+        state['match_percentage'] = match_results['match_percentage']
+        state['current_step'] = 'match_skills'
+        
+        logger.info(f"Match: {match_results['match_percentage']}%")
+    except Exception as e:
+        logger.error(f"Skill matching error: {e}")
+        state['matched_skills'] = []
+        state['missing_skills'] = []
+        state['match_percentage'] = 0.0
+        state['errors'].append(f"Skill matching: {str(e)}")
     
     return state
 
 def retrieve_knowledge_node(state: AgentState) -> AgentState:
     """Node: Search RAG knowledge base"""
-    print("📚 Retrieving career knowledge...")
+    logger.info("📚 Retrieving career knowledge...")
     
-    # Create search query based on job
-    query = f"Skills and career path for: {state['job_description'][:200]}"
-    
-    rag_context = tools.search_knowledge(query, n_results=3)
-    
-    state['rag_context'] = rag_context
-    state['current_step'] = 'retrieve_knowledge'
+    try:
+        query = f"Skills and career path for: {state['job_description'][:200]}"
+        rag_context = tools.search_knowledge(query, n_results=3)
+        state['rag_context'] = rag_context
+        state['current_step'] = 'retrieve_knowledge'
+        logger.info(f"Retrieved {len(rag_context)} chars of context")
+    except Exception as e:
+        logger.error(f"RAG retrieval error: {e}")
+        state['rag_context'] = "Knowledge retrieval unavailable."
+        state['errors'].append(f"RAG: {str(e)}")
     
     return state
 
 def generate_ai_recommendations_node(state: AgentState) -> AgentState:
     """Node: Generate AI-powered recommendations using Gemini"""
-    print("🤖 Generating AI recommendations...")
+    logger.info("🤖 Generating AI recommendations...")
     
     try:
         from google import genai
@@ -68,7 +93,14 @@ def generate_ai_recommendations_node(state: AgentState) -> AgentState:
         
         load_dotenv()
         
-        client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            logger.warning("No Gemini API key found")
+            state['recommendations'] = "AI recommendations unavailable - API key not configured."
+            state['current_step'] = 'ai_recommendations'
+            return state
+        
+        client = genai.Client(api_key=api_key)
         
         prompt = f"""
 You are an expert career advisor. Analyze this skill match and provide actionable recommendations.
@@ -116,10 +148,10 @@ Keep it concise, practical, and encouraging.
                     contents=prompt
                 )
                 recommendations = response.text
-                print(f"✅ Got recommendations from {model_name}")
+                logger.info(f"✅ Got recommendations from {model_name}")
                 break
             except Exception as e:
-                print(f"❌ {model_name} failed: {str(e)[:50]}")
+                logger.warning(f"{model_name} failed: {str(e)[:50]}")
                 continue
         
         if not recommendations:
@@ -136,24 +168,24 @@ Keep it concise, practical, and encouraging.
 
 **Your Strengths**:
 {chr(10).join(f'• {skill}' for skill in state['matched_skills'][:5])}
-
-**Recommendation**: {"You have most required skills. Apply and highlight your experience with " + ", ".join(state['matched_skills'][:3]) if match_pct >= 60 else "Focus on learning " + ", ".join(state['missing_skills'][:3]) + " before applying."}
 """
         
         state['recommendations'] = recommendations
         
     except Exception as e:
-        print(f"AI recommendation error: {e}")
-        state['recommendations'] = "AI recommendations unavailable. See matched/missing skills above."
+        logger.error(f"AI recommendation error: {e}")
+        state['recommendations'] = f"AI recommendations unavailable: {str(e)}"
+        state['errors'].append(f"AI recommendations: {str(e)}")
     
     state['current_step'] = 'ai_recommendations'
     return state
 
 def generate_report_node(state: AgentState) -> AgentState:
     """Node: Generate final report"""
-    print("📝 Generating final report...")
+    logger.info("📝 Generating final report...")
     
-    report = f"""
+    try:
+        report = f"""
 {'='*70}
 📊 RESUME & JOB MATCH ANALYSIS
 {'='*70}
@@ -171,8 +203,14 @@ def generate_report_node(state: AgentState) -> AgentState:
 
 {'='*70}
 """
-    
-    state['final_report'] = report
-    state['current_step'] = 'complete'
+        
+        state['final_report'] = report
+        state['current_step'] = 'complete'
+        logger.info("✅ Report generated")
+        
+    except Exception as e:
+        logger.error(f"Report generation error: {e}")
+        state['final_report'] = f"Report generation failed: {str(e)}"
+        state['errors'].append(f"Report: {str(e)}")
     
     return state
