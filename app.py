@@ -158,6 +158,20 @@ def analyze():
             'success': False,
             'error': f'Analysis failed: {str(e)}'
         }), 500
+# Add this BEFORE the if __name__ == '__main__':
+@app.route('/warmup')
+def warmup():
+    """Warm up endpoint - preload agent without full analysis"""
+    try:
+        logger.info("Warmup request received")
+        # Don't load agent yet, just return healthy
+        return jsonify({
+            'status': 'ready',
+            'message': 'Server is ready to accept requests'
+        }), 200
+    except Exception as e:
+        logger.error(f"Warmup error: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))

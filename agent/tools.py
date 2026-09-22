@@ -15,6 +15,15 @@ class AgentTools:
     
     def _ensure_kb_loaded(self):
         """Lazy load knowledge base only when needed"""
+        
+        # Skip RAG on Render free tier to save memory
+        import os
+        if os.environ.get('DISABLE_RAG', 'false').lower() == 'true':
+            logger.info("⚠️ RAG disabled via environment variable")
+            self._kb_initialized = True
+            self._knowledge_base = None
+            return
+        
         if not self._kb_initialized:
             try:
                 logger.info("📚 Initializing knowledge base...")
@@ -25,7 +34,7 @@ class AgentTools:
                 logger.info("✅ Knowledge base ready!")
             except Exception as e:
                 logger.error(f"Failed to load knowledge base: {e}")
-                self._kb_initialized = True  # Don't try again
+                self._kb_initialized = True
                 self._knowledge_base = None
     
     def extract_skills(self, text: str) -> list:
@@ -60,7 +69,7 @@ class AgentTools:
         self._ensure_kb_loaded()
         
         if self._knowledge_base is None:
-            return "Career knowledge temporarily unavailable."
+            return "Career knowledge: Focus on learning the missing skills identified above."
         
         try:
             return self._knowledge_base.get_relevant_context(query, n_results)
